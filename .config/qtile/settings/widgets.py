@@ -92,12 +92,12 @@ primary_widgets = [
         },
     ),
     widget.TextBox(
-        text=" ⟳", padding=2, foreground=colors['color4'], fontsize=14),
+        text=" ⟳", padding=2, foreground=colors['color1'], fontsize=14),
     widget.CheckUpdates(
         update_interval=1800,
         distro="Arch",
         display_format="{updates} Updates",
-        foreground=colors['color4'],
+        foreground=colors['color1'],
         mouse_callbacks={
             'Button1':
             lambda: qtile.cmd_spawn(TERMINAL + ' -e sudo pacman -Syu')
@@ -107,12 +107,12 @@ primary_widgets = [
     widget.BitcoinTicker(
         foreground=colors['color4'],
         mouse_callbacks={
-            'Button1': lambda: qtile.cmd_spawn('kitty -e cointop')
+            'Button1': lambda: qtile.cmd_spawn(TERMINAL + '-e cointop')
         },
         padding=5),
-    widget.TextBox(text=" Vol:", foreground=colors['color1'], padding=0),
+    widget.TextBox(text=" ", foreground=colors['color3'], padding=0),
     widget.Volume(
-        foreground=colors['color1'],
+        foreground=colors['color3'],
         padding=5,
         mouse_callbacks=(
             {
