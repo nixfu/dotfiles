@@ -117,7 +117,7 @@ ${color1}[S]+[0-9]${alignr}${color2}switch workspace${color}
 ${color1}[S]+[SHIFT]+[0-9]${alignr}${color2}send window${color}
 ${color1}[S]+h/l${alignr}${color2}shrink/expand${color}
 ${color1}${hr}${color}
-${color1}[S]+p, q${alignr}${color2}logout menu${color}
+${color1}[S]+p, l${alignr}${color2}logout/lock menu${color}
 ${color1}[S]+p, e${alignr}${color2}dmconf${color}
 ${color1}[S]+p, i${alignr}${color2}dmscrot${color}
 ${color1}[S]+p, k${alignr}${color2}dmkill${color}
