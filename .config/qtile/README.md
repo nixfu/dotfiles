@@ -30,6 +30,8 @@ configuration to get started.
 ## Autostart
 If you want to change *autostart* programs, open  ```./autostart.sh``` and change what programs you want to use.
 
+BE SURE to check the autostart.sh file to make sure you want to start the same programs on login that I use.
+
 ## Color Themes
 
 They are easy to create.  It only takes a handful of colors, you create them based on popular terminal or editor themes.
