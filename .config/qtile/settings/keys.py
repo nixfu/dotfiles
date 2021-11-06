@@ -4,14 +4,16 @@ from libqtile.command import lazy
 from .vars import MOD, ALT, R_ALT, TERMINAL
 
 keys = [
-    ### My applications quick bindings
-    EzKey("M-A-b", lazy.spawn('brave'), desc="Run Browser"),
-    EzKey("M-A-f", lazy.spawn('firefox'), desc="Run Browser"),
-    EzKey("M-A-n", lazy.spawn(TERMINAL + ' -e ncspot'), desc="Run ncspot"),
-    EzKey("M-A-s", lazy.spawn('steam'), desc="Run Steam"),
+    # App hotkeys
+    EzKey("M-A-f", lazy.spawn('pcmanfm'), desc="Run pcmanfm"),
     EzKey("M-A-s", lazy.spawn('spotify'), desc="Run Spotify Desktop"),
+    EzKey("M-A-b", lazy.spawn('brave'), desc="Run Brave Browser"),
+    EzKey("M-A-d", lazy.spawn('deadbeef'), desc="Run Deadbeef"),
+    EzKey("M-A-x", lazy.spawn('firefox'), desc="Run Firefox Browser"),
+    # Support some qtile default bindings
+    EzKey("M-A-r", lazy.restart(), desc="Restart qtile-qtile default"),
 
-    ### The essentials
+    # Essentials
     EzKey("M-<Return>", lazy.spawn(TERMINAL), desc="run Terminal"),
     EzKey(
         "M-S-<Return>",
@@ -25,25 +27,28 @@ keys = [
         "M-C-<Return>",
         lazy.spawn("xlunch -input /etc/xlunch/entries.dsv -I 30 -W"),
         desc="xlunch application launcher (.desktop) apps"),
+
+    # Layout
     EzKey("M-<Tab>", lazy.next_layout(), desc="Toggle through layout types"),
     EzKey("M-S-c", lazy.window.kill(), desc="Kill active window"),
     EzKey("M-S-r", lazy.restart(), desc="Restart qtile"),
     EzKey("M-S-q", lazy.shutdown(), desc="Shutdown/exit qtile"),
 
-    ### Switch focus to specific monitor (out of three)
-    EzKey("M-w", lazy.to_screen(0), desc="Keyboard focus to monitor 1"),
+    # Screen
+    EzKey("M-c", lazy.window.kill(), desc="Kill active window-qtile default"),
     EzKey("M-e", lazy.to_screen(1), desc="Keyboard focus to monitor 2"),
+    EzKey("M-w", lazy.to_screen(0), desc="Keyboard focus to monitor 1"),
     EzKey("M-r", lazy.to_screen(2), desc="Keyboard focus to monitor 3"),
 
-    ### Switch focus of monitors
+    # Monitors
     EzKey("M-<period>", lazy.next_screen(), desc="Move focus to next monitor"),
     EzKey("M-<comma>", lazy.next_screen(), desc="Move focus to prev monitor"),
 
-    ### Treetab controls
+    # Treetab
     EzKey("M-C-j", lazy.section_up(), desc="Move up a section in treetab"),
     EzKey("M-C-k", lazy.section_down(), desc="Move down a section in treetab"),
 
-    ### Window control
+    # Window Control
     EzKey("M-j", lazy.layout.up(), desc="Move focus up in current stack pane"),
     EzKey(
         "M-k",
@@ -64,7 +69,7 @@ keys = [
         lazy.window.toggle_fullscreen(),
         desc="Toggle window fullscreen"),
 
-    ### Window Sizing
+    # Window Sizing
     EzKey(
         "M-h",
         lazy.layout.shrink(),
@@ -81,7 +86,7 @@ keys = [
         lazy.layout.maximize(),
         desc="toggle window between minimum and maximum size"),
 
-    ### Stack controls
+    # Stack controls
     EzKey(
         "M-S-<space>",
         lazy.layout.rotate(),
@@ -92,7 +97,7 @@ keys = [
         lazy.layout.next(),
         desc='Switch window focus to other pane(s) of stack'),
 
-    ### Media Controls
+    # Media Keys
     EzKey(
         "<XF86AudioRaiseVolume>",
         lazy.spawn("amixer -c 0 -q set Master 1%+"),
@@ -105,10 +110,18 @@ keys = [
         "<XF86AudioMute>",
         lazy.spawn("amixer -q -D pulse sset Master toggle"),
         desc="Volume MUTE media key"),
+    EzKey(
+        "<XF86AudioNext>",
+       lazy.spawn("playerctl next"),
+       desc="NEXT media key"),
+    EzKey(
+        "<XF86AudioPrev>",
+        lazy.spawn("playerctl previous"),
+        desc="PREV media key"),
 
-    ### Dmenu scripts launched using the key chord SUPER+p followed by 'key'
-    ### To obtain these handy scripts get them from DistroTube here:
-    ### https://gitlab.com/dwt1/dmscripts
+    # Dmenu scripts launched using the key chord SUPER+p followed by 'key'
+    # To obtain these handy scripts get them from DistroTube here:
+    # https://gitlab.com/dwt1/dmscripts
     KeyChord(
         [MOD], "p", [
             Key(
@@ -147,9 +160,15 @@ keys = [
                 lazy.spawn("./.dmscripts/dmsearch"),
                 desc='Search various search engines via dmenu'),
         ]),
-    # System: screenlock, reboot, and poweroff (calls a shell script)
+
+    # System
     EzKey(
         'A-C-<Delete>',
         lazy.spawn("./.dmscripts/dmlogout"),
         desc="Ctrl-Alt-Del logout/lock"),
+    EzKey(
+        '<Print>',
+        lazy.spawn("scrot -e 'mv $f ~/screenshots/'"),
+        desc="Printscreen"),
+
 ]

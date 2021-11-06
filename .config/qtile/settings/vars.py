@@ -21,4 +21,4 @@ BIN_DIR = os.path.expanduser('~/.local/bin/')
 #         end up fighting each other and both loose...!
 WITH_SYS_TRAY = True
 
-MY_WX = 'London'
+MY_WX = 'klou'

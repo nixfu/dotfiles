@@ -4,9 +4,12 @@ import os
 import socket
 import subprocess
 from libqtile import widget, bar, pangocffi, utils, hook, qtile
-from libqtile.widget import base
 
-# Get the icons used at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
+# Use environment vars for some personalized option values
+# set this env vars in the .xprofile file via export WTTR_LOCATION="" etc.
+stockticker_apikey=os.environ.get('STOCKTICKER_APIKEY','')
+stockticker_symbol=os.environ.get('STOCKTICKER_SYMBOL','IBM')
+wttr_location=os.environ.get('WTTR_LOCATION','')
 
 # create some shortcuts for colors
 text = colors['text'][0]
@@ -25,21 +28,16 @@ color4 = colors['color4'][0]
 def base(fg='text', bg='dark'):
     return {'foreground': colors['light'], 'background': colors['dark']}
 
-
 def separator():
     return widget.Sep(**base(), linewidth=0, padding=5)
-
 
 def icon(fg='text', bg='dark', fontsize=14, text="?"):
     return widget.TextBox(
         **base(fg, bg), fontsize=fontsize, text=text, padding=3)
 
-
 widget_defaults = dict(
-    font="Ubuntu Mono", fontsize=12, padding=2, background=colors['dark'])
-
+    font="Hack Nerd Font Mono", fontsize=14, padding=3, background=colors['dark'])
 extension_defaults = widget_defaults.copy()
-
 
 def workspaces():
     return [
@@ -71,37 +69,86 @@ def workspaces():
 
 
 # main bar on primary monitor
-primary_widgets = [
+primary_widgets = []
+primary_widgets_start = [
+    separator(),
     *workspaces(),
     separator(),
-    widget.Image(
-        filename="~/.config/qtile/icons/python-white.png",
-        scale="False",
-        mouse_callbacks={'Button1': lambda: qtile.cmd_spawn(TERMINAL)}),
-    separator(),
-    widget.Wttr(
-        location={MY_WX: MY_WX},
-        units='s',
-        format='%C %c %t %w',
-        foreground=colors['color3'],
-        padding=2,
-        mouse_callbacks={
-            'Button1':
-            lambda: qtile.cmd_spawn(
-                TERMINAL + ' -e ' + SCRIPT_DIR + 'show_wx.sh')
-        },
+    widget.Mpris2(
+        name='rhythmbox',
+        objname='org.mpris.MediaPlayer2.rhythmbox',
+        display_metadata=['xesam:title', 'xesam:artist'],
+        foreground='888888',
+        scroll_chars=40,
+        scroll_interval=1,
+        scroll_wait_intervals=20,
+        stop_pause_text='',
     ),
-    widget.TextBox(
-        text=" ⟳", padding=2, foreground=colors['color1'], fontsize=14),
+    widget.Mpris2(
+        name='spotify',
+        objname='org.mpris.MediaPlayer2.spotify',
+        display_metadata=['xesam:title', 'xesam:artist'],
+        foreground='888888',
+        scroll_chars=40,
+        scroll_interval=1,
+        scroll_wait_intervals=10,
+        stop_pause_text='',
+    ),
+    widget.Mpris2(
+        name='spotifyd',
+        objname='org.mpris.MediaPlayer2.spotifyd',
+        display_metadata=['xesam:title', 'xesam:artist'],
+        foreground='888888',
+        scroll_chars=40,
+        scroll_interval=1,
+        scroll_wait_intervals=10,
+        stop_pause_text='',
+    ),
+    separator(),
     widget.CheckUpdates(
         update_interval=1800,
-        distro="Arch",
+        distro="Arch_yay",
+        custom_command='checkupdates;paru -Qum',
         display_format="{updates} Updates",
+        foreground=colors['color2'],
+        colour_have_updates=colors['color2'],
+        mouse_callbacks={
+            'Button1':
+            lambda: qtile.cmd_spawn(TERMINAL + ' -e paru -Syu')
+        }),
+]
+primary_widgets.extend(primary_widgets_start)
+
+primary_widgets_wttr = [
+    widget.Wttr(
+        location={wttr_location : wttr_location},
+        units='s',
+        format='%C %c %t/%f %w',
         foreground=colors['color1'],
         mouse_callbacks={
             'Button1':
-            lambda: qtile.cmd_spawn(TERMINAL + ' -e sudo pacman -Syu')
-        }),
+            lambda: qtile.cmd_spawn(
+                TERMINAL + ' -e ' + SCRIPT_DIR + 'show_wx.sh ' + wttr_location)
+        },
+    ),
+    separator(),
+]
+if wttr_location:
+    primary_widgets.extend(primary_widgets_wttr)
+
+
+# add stockticker widget if env vars defined
+primary_widgets_stockticker = [ 
+    widget.StockTicker(
+        apikey=stockticker_apikey,
+        symbol=stockticker_symbol,
+        foreground=colors['color3'],
+        ),
+]
+if stockticker_apikey:
+    primary_widgets.extend(primary_widgets_stockticker)
+
+primary_widgets_finish = [
     widget.TextBox(
         text=" ₿", padding=0, foreground=colors['color4'], fontsize=12),
     widget.BitcoinTicker(
@@ -142,6 +189,8 @@ primary_widgets = [
     widget.CurrentLayoutIcon(foreground=color2, scale=0.7),
     widget.CurrentLayout(foreground=color2, padding=5),
 ]
+primary_widgets.extend(primary_widgets_finish)
+
 
 # used when second monitor is connected
 secondary_widgets = [

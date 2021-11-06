@@ -12,7 +12,7 @@ from settings.screens import screens
 from settings.mouse import mouse
 from settings.path import qtile_path
 from settings.vars import WITH_SYS_TRAY
-
+#from settings.scratchpad import keys_scratchpad, scratchpad
 
 @hook.subscribe.startup_once
 def autostart():
@@ -27,4 +27,4 @@ bring_front_click = False
 cursor_warp = True
 auto_fullscreen = True
 focus_on_window_activation = 'urgent'
-wmname = 'LG3D'
+wmname = 'Qtile'
