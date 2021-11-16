@@ -74,50 +74,19 @@ primary_widgets_start = [
     separator(),
     *workspaces(),
     separator(),
-    widget.Mpris2(
-        name='rhythmbox',
-        objname='org.mpris.MediaPlayer2.rhythmbox',
-        display_metadata=['xesam:title', 'xesam:artist'],
-        foreground='888888',
-        scroll_chars=40,
-        scroll_interval=1,
-        scroll_wait_intervals=20,
-        stop_pause_text='',
-    ),
-    widget.Mpris2(
-        name='spotify',
-        objname='org.mpris.MediaPlayer2.spotify',
-        display_metadata=['xesam:title', 'xesam:artist'],
-        foreground='888888',
-        scroll_chars=40,
-        scroll_interval=1,
-        scroll_wait_intervals=10,
-        stop_pause_text='',
-    ),
-    widget.Mpris2(
-        name='spotifyd',
-        objname='org.mpris.MediaPlayer2.spotifyd',
-        display_metadata=['xesam:title', 'xesam:artist'],
-        foreground='888888',
-        scroll_chars=40,
-        scroll_interval=1,
-        scroll_wait_intervals=10,
-        stop_pause_text='',
-    ),
-    separator(),
-    widget.CheckUpdates(
-        update_interval=1800,
-        distro="Arch_yay",
-        custom_command='checkupdates;paru -Qum',
-        display_format="{updates} Updates",
-        foreground=colors['color2'],
-        colour_have_updates=colors['color2'],
-        mouse_callbacks={
-            'Button1':
-            lambda: qtile.cmd_spawn(TERMINAL + ' -e paru -Syu')
-        }),
 ]
 primary_widgets.extend(primary_widgets_start)
+
+primary_widgets_nowplaying = [
+    widget.GenPollText(
+        update_interval=5, 
+        func=lambda: subprocess.check_output(os.path.expanduser("~/.local/bin/scripts/nowplaying.sh")).decode("utf-8"),
+        foreground='888888',
+    ),
+    separator(),
+]
+if os.path.isfile(os.path.expanduser("~/.local/bin/scripts/nowplaying.sh")):
+    primary_widgets.extend(primary_widgets_nowplaying)
 
 primary_widgets_wttr = [
     widget.Wttr(
@@ -173,6 +142,17 @@ primary_widgets_finish = [
                     TERMINAL + ' -e ' + SCRIPT_DIR + 'start_spt.sh'),
             }),
     ),
+    widget.CheckUpdates(
+        update_interval=1800,
+        distro="Arch_yay",
+        custom_command='checkupdates;paru -Qum',
+        display_format="{updates} Updates",
+        foreground=colors['color2'],
+        colour_have_updates=colors['color2'],
+        mouse_callbacks={
+            'Button1':
+            lambda: qtile.cmd_spawn(TERMINAL + ' -e paru -Syu')
+        }),
     widget.TextBox(text="  ", foreground=colors['color1'], padding=0),
     widget.Clock(
         foreground=color1,

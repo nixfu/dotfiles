@@ -2,6 +2,7 @@
 from libqtile.config import Key, EzKey, KeyChord
 from libqtile.command import lazy
 from .vars import MOD, ALT, R_ALT, TERMINAL
+import os
 
 keys = [
     # App hotkeys
@@ -112,11 +113,11 @@ keys = [
         desc="Volume MUTE media key"),
     EzKey(
         "<XF86AudioNext>",
-       lazy.spawn("playerctl next"),
+       lazy.spawn("./.local/bin/scripts/player_next.sh"),
        desc="NEXT media key"),
     EzKey(
         "<XF86AudioPrev>",
-        lazy.spawn("playerctl previous"),
+        lazy.spawn("./.local/bin/scripts/player_prev.sh"),
         desc="PREV media key"),
 
     # Dmenu scripts launched using the key chord SUPER+p followed by 'key'
