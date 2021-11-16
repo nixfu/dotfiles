@@ -10,9 +10,10 @@ if cmd_exist spotifyd ; then
     __start spotifyd --no-daemon
 fi
 
+# I use jonaburg picom fork that has rounded corners
 if cmd_exist picom ; then
     __kill picom
-    __start picom
+    __start picom --experimental-backends
 fi
 
 if cmd_exist feh ; then
