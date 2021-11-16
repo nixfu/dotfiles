@@ -100,12 +100,13 @@ for i, group in enumerate(groups):
     ])
 
 # define dropdown scrathpad
-dropdowns = [DropDown('term', 'alacritty', x=0.125, y=0.25,
+dropdowns = [DropDown('term', 'alacritty -e tmux', x=0.125, y=0.25,
     width=0.75, height=0.5, opacity=0.8,
     on_focus_lost_hide=True)]
 groups.append(ScratchPad("scratch", dropdowns))
 keys.extend([
-    Key([MOD, "shift"], "s", lazy.group["scratch"].dropdown_toggle("term"))
+    Key([MOD, 'shift'], 's', lazy.group["scratch"].dropdown_toggle("term")),
+    Key([MOD], 'F1', lazy.group["scratch"].dropdown_toggle("term"))
 ])
 
 
