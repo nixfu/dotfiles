@@ -156,7 +156,7 @@ primary_widgets_finish = [
     widget.TextBox(text="  ", foreground=colors['color1'], padding=0),
     widget.Clock(
         foreground=color1,
-        format='%d/%m/%Y - %H:%M ',
+        format='%d-%b-%Y - %H:%M ',
         mouse_callbacks=(
             {
                 'Button1':
